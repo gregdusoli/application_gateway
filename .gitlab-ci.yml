@@ -1,0 +1,27 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build_branch
+  - build_tag
+
+variables:
+  IMAGE_BRANCH: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+Build Docker Image:
+  stage: build_branch
+  only:
+    - branches
+  except:
+    - master
+    - develop
+    - staging
+    - "nginx-alpine"
+  script: 
+    - docker build --pull -t $IMAGE_BRANCH:latest .
+    - docker push $IMAGE_BRANCH:latest

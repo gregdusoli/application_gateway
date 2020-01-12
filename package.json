@@ -1,0 +1,17 @@
+{
+  "name": "nginx-alpine",
+  "version": "1.0.0",
+  "description": "Nginx Reverse Proxy",
+  "main": "/scripts/",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/findata-repo/docker/tree/nginx-alpine.git"
+  },
+  "author": "Guilherme Gomes <gtechmedia@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "app": "./scripts/app.sh",
+    "proxy": "./scripts/proxy.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

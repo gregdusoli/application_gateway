@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nginx: 
+    image: nginx:alpine
+    container_name: nginx_reverseproxy
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/proxy.conf:/etc/nginx/proxy.conf
+      - ./config/fastcgi.conf:/etc/nginx/fastcgi.conf
+      - ./config/mime.types:/etc/nginx/mime.types
+      - ./conf.d/:/etc/nginx/conf.d/
+      - ./upstreams/:/etc/nginx/upstreams/
+      - ./www/:/var/www/
+      - ./ssl/:/etc/ssl/
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - azure
+    
+networks: 
+  azure:
