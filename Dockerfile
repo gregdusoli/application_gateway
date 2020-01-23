@@ -1,5 +1,7 @@
 FROM nginx:alpine
 
+LABEL maintainer="Guilherme Gomes <gtechmedia@gmail>"
+
 COPY ./nginx/config/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/config/proxy.conf /etc/nginx/proxy.conf
 COPY ./nginx/config/fastcgi.conf /etc/nginx/fastcgi.conf
