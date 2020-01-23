@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 if [[  $# -eq 2  ]]; then
   option=$1
   subdomain=$2
@@ -37,9 +39,9 @@ read port
 
 echo -e "\033[32m\n __________________________________________________"
 echo    "|                                                  |"
-echo -e "|      \033[1mA seguinte regra de Proxy será criada:\033[0m      \033[32m|"
-echo    "|              FQDN: $subdomain.eqi.life            |"
-echo    "|              Porta: $port                         |"
+echo -e "|      \033[1mA seguinte regra de Proxy será criada:\033[0m\033[32m      |"
+echo -e "|            FQDN: $subdomain.eqi.life              |"
+echo    "|            Porta: $port                           |"
 echo -e "|__________________________________________________|\033[0m"
 
 echo -e "\033[1m\033[33m\n*NOTA:\033[0m \033[33mpara que a esta regra funcione, é necessário que o container Docker da aplicação esteja rodando na porta de serviço informada no passo anterior."
