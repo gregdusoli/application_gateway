@@ -7,10 +7,10 @@ if [[  $# -eq 2  ]]; then
   subdomain=$2
 fi
 
-echo -e "\033[32m ______________________________________________"
-echo    "|                                              |"
-echo    "|   ASSISTENTE DE CRIAÇÃO DE REGRAS DE PROXY   |"
-echo -e "|______________________________________________|\033[0m"
+echo -e "\033[32m ________________________________________________" # 48 characters
+echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+echo -e "|    ASSISTENTE DE CRIAÇÃO DE REGRAS DE PROXY    |"
+echo -e "|________________________________________________|\033[0m"
  
 echo -e "\033[32m\nSeja bem-vindo ao Assistente de Criação de regras de Proxy!\033[0m"
 echo -e "\033[33mAtravés deste wizard você pode criar uma regra de redirecionamento de requisições para seu novo container de app.\033[0m"
@@ -22,27 +22,30 @@ if [[  $option != 1  ]]; then
   read option
 fi
 
-echo -e "\033[33m\n __________________________________________________"
-echo    "|                                                  |"
-echo -e "|                      \033[1mAVISO\033[0m                       \033[33m|"
-echo    "|       Antes de criar este redirecionamento       |"
-echo    "|       é necessário criar o apontamento DNS       |"
-echo -e "|__________________________________________________|\033[0m"
+echo -e "\033[32m ________________________________________________" # 48 characters
+echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+echo -e "| \t\t\t\033[1m AVISO \033[0m\033[32m\t\t\t |"
+echo -e "| \t Antes de criar este redirecionamento \t |"
+echo -e "| \t é necessário criar o apontamento DNS \t |"
+echo -e "|________________________________________________|\033[0m"
+
+echo -e "\033[1m\nPra começar, informe seu Domain Name principal:\033[0m"
+read domain
 
 if [[ -z "$subdomain" ]]; then
-  echo -e "\033[1m\n- Qual o subdomain desejado? (FQDN = [subdomain].eqi.life)\033[0m"
+  echo -e "\033[1m\n- Qual o subdomain desejado? (FQDN = [subdomain].$domain)\033[0m"
   read subdomain
 fi
 
 echo -e "\033[1m\n- Para qual porta devo redirecionar as requisições?\033[0m"
 read port
 
-echo -e "\033[32m\n __________________________________________________"
-echo    "|                                                  |"
-echo -e "|      \033[1mA seguinte regra de Proxy será criada:\033[0m\033[32m      |"
-echo -e "|            FQDN: $subdomain.eqi.life              |"
-echo    "|            Porta: $port                           |"
-echo -e "|__________________________________________________|\033[0m"
+echo -e "\033[32m________________________________________________" # 48 characters
+echo -e "\t"
+echo -e "\033[1m     A seguinte regra de Proxy será criada: \033[0m\033[32m"
+echo -e "        FQDN: $subdomain.$domain"
+echo -e "        Porta: $port"
+echo -e "________________________________________________\033[0m"
 
 echo -e "\033[1m\033[33m\n*NOTA:\033[0m \033[33mpara que a esta regra funcione, é necessário que o container Docker da aplicação esteja rodando na porta de serviço informada no passo anterior."
 echo -e "Caso ainda não tenha criado o container da aplicação, não prossiga com este wizard e execute o script 'app.sh'.\033[0m"
@@ -62,7 +65,7 @@ if [[ "$confirm" =~ [sS] ]]; then
     listen 80;
     listen [::]:80;
 
-    server_name  $subdomain.eqi.life;
+    server_name  $subdomain.$domain;
 
     location / {
       proxy_pass http://$subdomain;

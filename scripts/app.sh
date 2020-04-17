@@ -72,7 +72,7 @@ function dockerComposeUp {
       if [[ $? -eq 0 ]]; then
         echo -e "\033[32m\nRegras de redirecionamento criadas com sucesso!\n\033[0m"
       else 
-        echo -e "\033[31m\nErro ao aplicar as novas configurações...restart o container do Service Gateway manualmente.\n\033[0m"
+        echo -e "\033[31m\nErro ao aplicar as novas configurações...restart o container do Application Gateway manualmente.\n\033[0m"
       fi
     else
       echo -e "\033[31m\nNão foi possível subir os serviços do container! Execute este passo manualmente...\n\033[0m"
@@ -97,10 +97,10 @@ function createEnvFile {
 #       BEGIN SCRIPT EXEC        #
 ##################################
 
-echo -e "\033[32m ______________________________________________"
-echo    "|                                              |"
-echo    "|        ASSISTENTE DE CRIAÇÃO DE APPS         |"
-echo -e "|______________________________________________|\033[0m"
+echo -e "\033[32m ________________________________________________" # 48 characters
+echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+echo -e "| \t ASSISTENTE DE CRIAÇÃO DE APPS \t\t |"
+echo -e "|________________________________________________|\033[0m"
 
 echo -e "\033[32m\nSeja bem-vindo ao Assistente de Criação de Containers de Aplicação!\033[0m"
 echo -e "\033[33mAtravés deste wizard você pode criar uma nova aplicação ou iniciar um projeto baseado em um repositório Git.\033[0m"
@@ -112,16 +112,16 @@ echo -e "(3) CRIAR REGRAS DE PROXY PARA APLICAÇÃO EXISTENTE"
 echo -e "(S) SAIR"
 
 read option
-
+ 
 # Acessa o diretório padrão de projetos para criação da aplicação
-cd public_html/
+cd ../public_html/
 
 if [[ $option == 1 ]]; then
 
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        NOVA APLICAÇÃO POR REPOSITÓRIO        |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo -e "| \t NOVA APLICAÇÃO POR REPOSITÓRIO \t |"
+  echo -e "|________________________________________________|\033[0m"
 
   echo -e "\033[33m\nEste wizard realiza as seguintes ações:"
   echo    " - clona o respositório Git da aplicação"
@@ -132,18 +132,18 @@ if [[ $option == 1 ]]; then
   option1
 elif [[ $option == 2 ]]; then
   
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        NOVA APLICAÇÃO POR DOCKERFILE         |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo -e "| \t NOVA APLICAÇÃO POR DOCKERFILE \t\t |"
+  echo -e "|________________________________________________|\033[0m"
 
   option2
 elif [[ $option == 3 ]]; then
 
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        REGRAS PARA APLICAÇÃO EXISTENTE       |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo    "| \t REGRAS PARA APLICAÇÃO EXISTENTE \t\t |"
+  echo -e "|________________________________________________|\033[0m"
 
   option3
 else
