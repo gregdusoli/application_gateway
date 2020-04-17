@@ -72,7 +72,7 @@ function dockerComposeUp {
       if [[ $? -eq 0 ]]; then
         echo -e "\033[32m\nRegras de redirecionamento criadas com sucesso!\n\033[0m"
       else 
-        echo -e "\033[31m\nErro ao criar regras de redirecionamento...execute este passo manualmente com o comando 'npm run proxy'.\n\033[0m"
+        echo -e "\033[31m\nErro ao aplicar as novas configurações...restart o container do Service Gateway manualmente.\n\033[0m"
       fi
     else
       echo -e "\033[31m\nNão foi possível subir os serviços do container! Execute este passo manualmente...\n\033[0m"
