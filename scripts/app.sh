@@ -2,6 +2,8 @@
 
 clear
 
+APPGTW_PATH=$PWD
+
 function option1 {
   # Solicita o nome da aplicação que será também o nome do subdiretório (public_html/APP_NAME/)
   echo -e "\033[1m\n- Informe o nome da nova aplicação (nome semântico em Kebab Case - ex: 'novo-app')\033[0m"
@@ -10,6 +12,9 @@ function option1 {
   # Solicita o link do repositório de código
   echo -e "\033[1m\n- Informe o link do repositório da aplicação\033[0m"
   read repolink
+
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/public_html/
 
   # Clona o respositório da aplicação
   $(git clone $repolink $appname )
@@ -27,32 +32,42 @@ function option1 {
 }
 
 function option2 {
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/public_html/
+
   # Solicita o local do arquivo docker-compose.yml
   echo -e "\033[1m\n- Informe o local do arquivo docker-compose.y(a)ml (relativo ao diretório public_html):\033[0m"
   read dockerfile
 
   # Confirma o local do arquivo docker-compose.yml
-  echo -e "\033[32m\nO local do arquivo está correto: (public_html/${dockerfile}/docker-compose.yml)?\n\033[0m"
+  if [[ -e "$APPGTW_PATH/public_html/${dockerfile}/docker-compose.yml" ]]; then
+    echo -e "\033[32m\nO arquivo Docker Compose foi validado em: (public_html/${dockerfile}/docker-compose.yml)?\n\033[0m"
 
-  # Acessa o diretório da aplicação clonada
-  cd $dockerfile
+    # Acessa o diretório da aplicação clonada
+    cd $dockerfile
 
-  # Verifica se o arquivo .env.example existe e, caso sim, renomeia para .env
-  if [[ -e .env.example ]]; then
-    createEnvFile
+    # Verifica se o arquivo .env.example existe e, caso sim, renomeia para .env
+    if [[ -e .env.example ]]; then
+      createEnvFile
+    fi
+
+    # Executa a função que sube os serviços do container
+    dockerComposeUp
+  else
+    echo -e "\033[31m\nO arquivo Docker Compose informado é inválido ou não existe em $APPGTW_PATH/public_html/${dockerfile}\n\033[0m"
   fi
-
-  # Executa a função que sube os serviços do container
-  dockerComposeUp
 }
 
 function option3 {
-  cd ../scripts
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/scripts/
+  
+  # Executa o script de criação de regras Proxy
   ./proxy.sh
 }
 
 function dockerComposeUp {
-  # Verifica a existência de um arquivo 'docker-compose.yml na raiz da aplicação criada'
+  # Verifica a existência de um arquivo 'docker-compose.yml na raiz da aplicação existente'
   if [[ -e ./docker-compose.yml || -e ./docker-compose.yaml ]]; then
     # Executa 'docker-compose up -d' e sobe o container
     echo -e "\033[32m\nO arquivo docker-compose.y(a)ml encontrado na raiz da aplicação, executando serviços do container...\n\033[0m"
@@ -72,7 +87,7 @@ function dockerComposeUp {
       if [[ $? -eq 0 ]]; then
         echo -e "\033[32m\nRegras de redirecionamento criadas com sucesso!\n\033[0m"
       else 
-        echo -e "\033[31m\nErro ao aplicar as novas configurações...restart o container do Service Gateway manualmente.\n\033[0m"
+        echo -e "\033[31m\nErro ao aplicar as novas configurações...restart o container do Application Gateway manualmente.\n\033[0m"
       fi
     else
       echo -e "\033[31m\nNão foi possível subir os serviços do container! Execute este passo manualmente...\n\033[0m"
@@ -97,10 +112,10 @@ function createEnvFile {
 #       BEGIN SCRIPT EXEC        #
 ##################################
 
-echo -e "\033[32m ______________________________________________"
-echo    "|                                              |"
-echo    "|        ASSISTENTE DE CRIAÇÃO DE APPS         |"
-echo -e "|______________________________________________|\033[0m"
+echo -e "\033[32m ________________________________________________" # 48 characters
+echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+echo -e "| \t ASSISTENTE DE CRIAÇÃO DE APPS \t\t |"
+echo -e "|________________________________________________|\033[0m"
 
 echo -e "\033[32m\nSeja bem-vindo ao Assistente de Criação de Containers de Aplicação!\033[0m"
 echo -e "\033[33mAtravés deste wizard você pode criar uma nova aplicação ou iniciar um projeto baseado em um repositório Git.\033[0m"
@@ -112,16 +127,16 @@ echo -e "(3) CRIAR REGRAS DE PROXY PARA APLICAÇÃO EXISTENTE"
 echo -e "(S) SAIR"
 
 read option
-
+ 
 # Acessa o diretório padrão de projetos para criação da aplicação
-cd public_html/
+cd $APPGTW_PATH/public_html/
 
 if [[ $option == 1 ]]; then
 
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        NOVA APLICAÇÃO POR REPOSITÓRIO        |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo -e "| \t NOVA APLICAÇÃO POR REPOSITÓRIO \t |"
+  echo -e "|________________________________________________|\033[0m"
 
   echo -e "\033[33m\nEste wizard realiza as seguintes ações:"
   echo    " - clona o respositório Git da aplicação"
@@ -132,18 +147,18 @@ if [[ $option == 1 ]]; then
   option1
 elif [[ $option == 2 ]]; then
   
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        NOVA APLICAÇÃO POR DOCKERFILE         |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo -e "| \t NOVA APLICAÇÃO POR DOCKERFILE \t\t |"
+  echo -e "|________________________________________________|\033[0m"
 
   option2
 elif [[ $option == 3 ]]; then
 
-  echo -e "\033[32m ______________________________________________"
-  echo    "|                                              |"
-  echo    "|        REGRAS PARA APLICAÇÃO EXISTENTE       |"
-  echo -e "|______________________________________________|\033[0m"
+  echo -e "\033[32m ________________________________________________" # 48 characters
+  echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
+  echo    "| \t REGRAS PARA APLICAÇÃO EXISTENTE \t\t |"
+  echo -e "|________________________________________________|\033[0m"
 
   option3
 else
