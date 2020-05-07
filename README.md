@@ -6,9 +6,9 @@ Este Application Gateway visa prover um ecossistema de aplicações, fornecendo 
 
 ### Features
 
-- Nginx servindo como gateway de requisições HTTP/HTTPS
+- Nginx servindo como gateway de requisições HTTP/HTTPS (certicação SSL a ser implementada)
 - Reverse Proxy atuando no redirecionamento de incoming traffic para portas de serviço correspondentes
-- Load Balancer para gerenciamento e equalização do volume de tráfego
+- Load Balancer para gerenciamento e equalização do volume de tráfego (a ser implementado)
 - Automation scripts para realizar migração/criação de aplicações que deverão ser gerenciadas pelo Application Gateway
 
 ---
@@ -33,7 +33,7 @@ Este Application Gateway visa prover um ecossistema de aplicações, fornecendo 
    - Para que a comunicação e as regras de Proxy Reverso possam funcionar, cada container deve ser colocado na mesma rede do container do Application Gateway
 
 2. Configuração do DNS
-   - Para que as aplicações respondam às requisições, é necessário criar uma entrada do tipo AAA no gerenciador de Zona DNS do seu domínio apontando para o IP público do Application Gateway
+   - Para que as aplicações respondam às requisições, é necessário criar uma entrada do tipo AAA no gerenciador de Zona DNS do domínio vinculado, apontando para o IP público do Application Gateway
 
 ---
 
