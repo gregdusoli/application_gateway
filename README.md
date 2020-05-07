@@ -1,6 +1,6 @@
 # Application Gateway
 
-Este Application Gateway visa prover um ecossistema de aplicações, fornecendo criação de regras proxy, upstreams, controle de tráfego e gerenciamento de requisições centralizados.
+Este Application Gateway visa prover um ecossistema de aplicações, fornecendo controle de tráfego e gerenciamento de requisições centralizados.
 
 ---
 
@@ -42,7 +42,7 @@ Este Application Gateway visa prover um ecossistema de aplicações, fornecendo 
 #### (\*) Pressupoe-se que passo Preparação do Cenário tenha sido cumprido.
 
 1. Para iniciar a migração ou criação de uma aplicação, acesse o host do Application Gateway
-2. Na raiz do diretório do Application Gateway, execute o comando `$ npm run app` ou `$ ./app.sh`
+2. Na raiz do diretório do usuário, execute o comando `$ npm run app`
 3. Selecione uma entre as duas opções fornecidas pelo wizard:
    1. App baseado em repositório Git
       - Será necessário informar a URL do repositório da aplicação a ser migrada ou criada
