@@ -2,6 +2,8 @@
 
 clear
 
+APPGTW_PATH=$PWD
+
 function option1 {
   # Solicita o nome da aplicação que será também o nome do subdiretório (public_html/APP_NAME/)
   echo -e "\033[1m\n- Informe o nome da nova aplicação (nome semântico em Kebab Case - ex: 'novo-app')\033[0m"
@@ -10,6 +12,9 @@ function option1 {
   # Solicita o link do repositório de código
   echo -e "\033[1m\n- Informe o link do repositório da aplicação\033[0m"
   read repolink
+
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/public_html/
 
   # Clona o respositório da aplicação
   $(git clone $repolink $appname )
@@ -27,32 +32,42 @@ function option1 {
 }
 
 function option2 {
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/public_html/
+
   # Solicita o local do arquivo docker-compose.yml
   echo -e "\033[1m\n- Informe o local do arquivo docker-compose.y(a)ml (relativo ao diretório public_html):\033[0m"
   read dockerfile
 
   # Confirma o local do arquivo docker-compose.yml
-  echo -e "\033[32m\nO local do arquivo está correto: (public_html/${dockerfile}/docker-compose.yml)?\n\033[0m"
+  if [[ -e "$APPGTW_PATH/public_html/${dockerfile}/docker-compose.yml" ]]; then
+    echo -e "\033[32m\nO arquivo Docker Compose foi validado em: (public_html/${dockerfile}/docker-compose.yml)?\n\033[0m"
 
-  # Acessa o diretório da aplicação clonada
-  cd $dockerfile
+    # Acessa o diretório da aplicação clonada
+    cd $dockerfile
 
-  # Verifica se o arquivo .env.example existe e, caso sim, renomeia para .env
-  if [[ -e .env.example ]]; then
-    createEnvFile
+    # Verifica se o arquivo .env.example existe e, caso sim, renomeia para .env
+    if [[ -e .env.example ]]; then
+      createEnvFile
+    fi
+
+    # Executa a função que sube os serviços do container
+    dockerComposeUp
+  else
+    echo -e "\033[31m\nO arquivo Docker Compose informado é inválido ou não existe em $APPGTW_PATH/public_html/${dockerfile}\n\033[0m"
   fi
-
-  # Executa a função que sube os serviços do container
-  dockerComposeUp
 }
 
 function option3 {
-  cd ../scripts
+  # Move o cursor para o diretório onde as aplicações devem ser colocadas
+  cd $APPGTW_PATH/scripts/
+  
+  # Executa o script de criação de regras Proxy
   ./proxy.sh
 }
 
 function dockerComposeUp {
-  # Verifica a existência de um arquivo 'docker-compose.yml na raiz da aplicação criada'
+  # Verifica a existência de um arquivo 'docker-compose.yml na raiz da aplicação existente'
   if [[ -e ./docker-compose.yml || -e ./docker-compose.yaml ]]; then
     # Executa 'docker-compose up -d' e sobe o container
     echo -e "\033[32m\nO arquivo docker-compose.y(a)ml encontrado na raiz da aplicação, executando serviços do container...\n\033[0m"
@@ -114,7 +129,7 @@ echo -e "(S) SAIR"
 read option
  
 # Acessa o diretório padrão de projetos para criação da aplicação
-cd ../public_html/
+cd $APPGTW_PATH/public_html/
 
 if [[ $option == 1 ]]; then
 
