@@ -1,0 +1,79 @@
+/*@import url("./reset.css");*/
+
+* {
+    font-family: Roboto, Helvetica, sans-serif;
+}
+
+body {
+    padding: 10px;
+}
+
+header {
+    border-bottom: 1px solid lightgray;
+}
+
+.topmenu {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topmenu img {
+    width: 120px;
+}
+
+.topmenu h5 {
+    color: #666;
+    text-decoration: overline;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.envs {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.envs h4 {
+    margin: 0 auto;
+}
+
+.cards {
+    margin: 0 auto;
+}
+
+.card {
+    top: 15px;
+    padding: 0;
+    margin: 20px;
+    max-width: 45%;
+    border: 2px solid transparent;
+}
+
+
+.card:hover {
+   border: 2px solid rgba(0, 100, 90, 0.3);
+}
+
+
+.card img {
+    height: auto;
+    max-height: 300px;
+    width: 100%;
+}
+
+.card .card-footer {
+    padding-bottom: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7em;
+    color: #999;
+    
+}
