@@ -1,10 +1,9 @@
 version: '3'
 
 services:
-
-  nginx:
+  service-application_gateway:
     build: . 
-    container_name: nginx_reverseproxy
+    container_name: service-application_gateway
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./nginx/upstreams/:/etc/nginx/upstreams/
@@ -13,8 +12,3 @@ services:
     ports:
       - ${NGINX_HTTP_PORT}:80
       - ${NGINX_HTTPS_PORT}:443
-    networks:
-      - azure
-    
-networks: 
-  azure:

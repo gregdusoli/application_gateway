@@ -1,7 +1,7 @@
 {
-  "name": "nginx-alpine",
+  "name": "application_gateway",
   "version": "1.0.0",
-  "description": "Nginx Reverse Proxy",
+  "description": "Application Gateway",
   "main": "/scripts/",
   "repository": {
     "type": "git",
