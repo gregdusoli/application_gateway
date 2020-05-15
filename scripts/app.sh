@@ -14,7 +14,7 @@ clear="\033[0m"
 
 function option1 {
   # Solicita o nome da aplicação que será também o nome do subdiretório (public_html/APP_NAME/)
-  echo -e "$bold\n- Informe o nome da nova aplicação (nome semântico em Kebab Case - ex: 'novo-app')$clear"
+  echo -e "$bold\n- Informe o nome da nova aplicação (nome semântico em Snake Case - ex: 'api_gateway')$clear"
   read appname
 
   # Solicita o link do repositório de código
