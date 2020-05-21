@@ -3,7 +3,7 @@
 clear
 
 # Define o Path de instalação do Application Gateway
-APPGTW_PATH=$PWD
+APPGTW_PATH=$(echo -e ~/application_gateway)
 
 # Formatação de texto
 bold="\033[1m"
@@ -38,23 +38,21 @@ function option1 {
 
 function option2 {
   # Solicita o local do arquivo docker-compose.yml
-  echo -e "$bold\n- Informe o local do arquivo docker-compose.y(a)ml (relativo ao diretório public_html):$clear"
+  echo -e "$bold\n- Informe o local do arquivo docker-compose.yml (relativo ao diretório public_html):$clear"
   read dockerfile
 
   # Confirma o local do arquivo docker-compose.yml
   if [[ -e "$APPGTW_PATH/public_html/${dockerfile}/docker-compose.yml" ]]; then
-    echo -e "$green\nO arquivo Docker Compose foi validado em: ($APPGTW_PATH/public_html/${dockerfile}/docker-compose.yml)!\n$clear"
+    echo -e "$green\nO Docker Composer foi validado em: ($APPGTW_PATH/public_html/${dockerfile}/docker-compose.yml)!\n$clear"
 
     # Acessa o diretório da aplicação clonada
-    cd $dockerfile
-
-  # Acessa o diretório da aplicação clonada
-  cd $dockerfile
+    cd "$APPGTW_PATH/public_html/$dockerfile"
 
     # Executa a função que sube os serviços do container
     dockerComposeUp
   else
-    echo -e "$bold$red\nO arquivo Docker Compose informado é inválido ou não existe em $APPGTW_PATH/public_html/${dockerfile}\n$clear"
+    echo -e "$bold$red\nO arquivo docker-compose.yml informado é inválido ou não existe em $APPGTW_PATH/public_html/${dockerfile}\n$clear"
+    exit 0
   fi
 
   # Executa a função que sube os serviços do container
@@ -70,10 +68,9 @@ function option3 {
 }
 
 function dockerComposeUp {
-  # Verifica a existência de um arquivo 'docker-compose.yml na raiz da aplicação criada'
+  # Verifica a existência de um arquivo 'docker-compose.yml antes de subir o container para evitar erro'
   if [[ -e ./docker-compose.yml || -e ./docker-compose.yaml ]]; then
     # Executa 'docker-compose up -d' e sobe o container
-    echo -e "$green\nO arquivo docker-compose.y(a)ml encontrado na raiz da aplicação, executando serviços do container...\n$clear"
     docker-compose up -d
 
     # Verifica se a saída do comando anterior gerou algum erro
@@ -104,12 +101,13 @@ function dockerComposeUp {
 }
 
 function createEnvFile {
-  # Caso exista um arquivo Dotenv, informa ao usuário a respeito e cria o arquivo
-  echo -e "$yellow$bold\nA aplicação requer a definição de variáveis ambiente; um arquivo com valores padrão foi criado para que seja possível executar os serviços do container.$clear"
+  # Caso exista um arquivo Env, informa ao usuário a respeito e cria o arquivo
+  echo -e "$yellow$bold\nA aplicação requer a definição de variáveis ambiente; um arquivo Env conforme o exemplo foi criado para que seja possível executar os serviços do container.$clear"
   
-  echo -e "$yellow$bold*$clear$yellow Caso necessite alterar alguma varíavel ambiente, faça as alterações no arquivo .env e restart o container manualmente.$clear"
-
   mv ./.env.example ./.env
+
+  echo -e "$yellow$bold$clear$yellow\nForneça os dados requeridos pelo arquivo Env, em seguida, execute este script novamente selecionando a opção 2.\n$clear"
+  exit 0
 }
 
 ##################################
@@ -125,15 +123,15 @@ echo -e "$green\nSeja bem-vindo ao Assistente de Criação de Containers de Apli
 echo -e "$yellow\nAtravés deste wizard você pode criar uma nova aplicação ou iniciar um projeto baseado em um repositório Git.$clear"
 
 echo -e "$bold\nPor favor, selecione a ação desejada:$clear"
-echo -e "(1) CRIAR NOVA APLICAÇÃO BASEADA EM REPOSITÓRIO"
-echo -e "(2) CRIAR NOVA APLICAÇÃO BASEADA EM DOCKERFILE"
-echo -e "(3) CRIAR REGRAS DE PROXY PARA APLICAÇÃO EXISTENTE"
-echo -e "(S) SAIR"
+echo -e "(1) CRIAR NOVA APLICAÇÃO BASEADA EM REPOSITÓRIO REMOTO"
+echo -e "(2) CRIAR NOVA APLICAÇÃO BASEADA EM DOCKER-COMPOSE LOCAL"
+echo -e "(3) CRIAR REGRAS DE PROXY PARA APLICAÇÃO LOCAL EXISTENTE"
+echo -e "(?) SAIR"
 
 read option
 
 # Acessa o diretório padrão de projetos para criação da aplicação
-cd public_html/
+cd ~/public_html/
 
 if [[ $option == 1 ]]; then
 
@@ -153,7 +151,7 @@ elif [[ $option == 2 ]]; then
   
   echo -e "$green ________________________________________________" # 48 characters
   echo -e "| \t\t\t\t\t\t |" # 6 tabs + 2 chars + 2 spaces
-  echo -e "| \t NOVA APLICAÇÃO POR DOCKERFILE \t\t |"
+  echo -e "| \t NOVA APLICAÇÃO POR DOCKER-COMPOSE \t |"
   echo -e "|________________________________________________|$clear"
 
   option2

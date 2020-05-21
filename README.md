@@ -29,7 +29,7 @@ Este Application Gateway visa prover um ecossistema de aplicações e serviços,
 #### (\*) As aplicações/serviços que serão gerenciados pelo Application Gateway devem estar Dockerizados
 
 1. Este Application Gateway deve estar localizado na raiz de diretórios do usuário (~/), caso não esteja, isso deve ser corrigido antes de prosseguir
-2. Renomear os arquivo *.env.example* para *.env*, *docker-compose.yml.example* para *docker-compose.yml* e fornecer os dados que eles solicitam
+2. Renomear os arquivos *.env.example* para *.env*, *docker-compose.yml.example* para *docker-compose.yml* e fornecer os dados que eles solicitam
 3. O Application Gateway espera que as aplicações/serviços a serem expostos externamente estejam na pasta 'public_html', na raiz do usuário. Caso não exista, crie:
 ```$ cd ~/ && mkdir public_html```
 4. Preparação dos containers de aplicação
