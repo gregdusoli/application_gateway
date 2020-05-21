@@ -1,2 +1,4 @@
-.envi
-public_html/*
+.env
+public_html
+nginx/conf.d/*
+nginx/upstreams/*
