@@ -16,5 +16,5 @@ services:
       - ${NETWORK_NAME}
 
 networks:
-  ${NETWORK_NAME}:
+  [NETWORK_NAME]:
     external: true
