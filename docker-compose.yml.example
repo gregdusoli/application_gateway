@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  service-application_gateway:
+    build: . 
+    container_name: service-application_gateway
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/upstreams/:/etc/nginx/upstreams/
+      - ./nginx/ssl/:/etc/ssl/
+      - ~/logs/service/application_gateway:/var/log/nginx
+      - ~/public_html/:/var/www/
+    ports:
+      - ${NGINX_HTTP_PORT}:80
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: ${NETWORK_NAME}

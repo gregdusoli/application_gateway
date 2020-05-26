@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-LABEL maintainer="Guilherme Gomes <gtechmedia@gmail>"
+LABEL maintainer="Guilherme Gomes <gtechmedia@gmail.com>"
 
 COPY ./nginx/config/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/config/proxy.conf /etc/nginx/proxy.conf
