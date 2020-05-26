@@ -15,6 +15,8 @@ Este Application Gateway visa prover um ecossistema de aplicações e serviços,
 
 ### Estrutura do projeto
 
+#### (\*) A estrutura de arquivos e diretórios deve obedecer o padrão especificado em [Scaffolding para hosts de aplicações](http://redmine.eqi.life/projects/eqi-investimentos/wiki/Scaffolding_para_hosts_de_aplicações)
+
 - nginx : Diretório de armazenamento dos arquivos necessários ao funcionamento do Application Gateway
 - nginx/config: Diretório que contém os arquicos de configuração do servidor
 - nginx/conf.d: Diretório para as configurações de rotas de requisições
