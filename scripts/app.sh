@@ -37,6 +37,14 @@ function option1 {
   # Solicita o nome da aplicação que será também o nome do subdiretório (public_html/APP_NAME/)
   echo -e "$bold\n- Qual é o nome do container da aplicação (exatamente o mesmo que está no Docker Compose do container)?$clear"
   read APPSVC_NAME
+  
+  # Acessa o diretório da aplicação clonada
+  if [[ -e $APPSVC_NAME ]]; then
+    cd $APPSVC_NAME
+  else
+    echo -e "$bold$red\nO caminho informado não foi encontrado. Execução abortada!$clear"
+    exit 1
+  fi
 
   # Solicita o link do repositório de código
   echo -e "$bold\n- Qual é o link do repositório da aplicação?$clear"
@@ -68,7 +76,7 @@ function option1 {
 
 function option2 {
   # Informa o usuário sobre o local padrão para applications e services
-  echo -e "$bold$yellow\nIMPORTANTE: Este script pressupõem que sua aplicação esteja dentro do diretório $APPGTW_PATH/public_html/.$clear"
+  echo -e "$yellow\nIMPORTANTE: Este script pressupõem que sua aplicação esteja dentro do diretório $APPGTW_PATH/public_html/.$clear"
 
   # Invoce a function que efine se o tipo do container é 'application' ou 'service'
   setAppSvcType
@@ -125,11 +133,11 @@ function dockerCompose {
       cd $APPGTW_PATH
 
       # Invoca o script de criação das regras de Streams e Proxy
-      ./scripts/proxy.sh 1 "$APPSVC_TYPE-$APPSVC_NAME"
+      ./scripts/proxy.sh 1 $APPSVC_TYPE $APPSVC_NAME
       
       # Verifica se a saída do comando anterior gerou algum erro
       if [[ $? -eq 0 ]]; then
-        echo -e "$green\nRegras de redirecionamento criadas com sucesso!\n$clear"
+        echo -e "$green$bold\nRegras de redirecionamento criadas com sucesso!\n$clear"
       else 
         echo -e "$red\nErro ao aplicar as novas configurações...verifique possíveis inconsistências em seu application/service.\n$clear"
       fi
@@ -145,11 +153,11 @@ function dockerCompose {
 
 function createEnvFile {
   # Caso exista um arquivo Env, informa ao usuário a respeito e cria o arquivo
-  echo -e "$yellow$bold\nA aplicação requer a definição de variáveis ambiente; um arquivo Env conforme o exemplo foi criado para que seja possível executar os serviços do container.$clear"
+  echo -e "$yellow\nA aplicação requer a definição de variáveis ambiente; um arquivo Env conforme o exemplo foi criado para que seja possível executar os serviços do container.$clear"
   
   mv ./.env.example ./.env
 
-  echo -e "$yellow$bold$clear$yellow\nForneça os dados requeridos pelo arquivo Env, em seguida, execute este script novamente selecionando a opção 2.\n$clear"
+  echo -e "$yellow$bold\nForneça os dados requeridos pelo arquivo Env, em seguida, execute este script novamente selecionando a opção 2.\n$clear"
   exit 0
 }
 
@@ -227,6 +235,6 @@ elif [[ $option == 3 ]]; then
   option3
 else
 
-  echo -e "$bold$yellow\nCriação da aplicação cancelada!\n$clear"
+  echo -e "$yellow$bold\nCriação da aplicação cancelada!\n$clear"
   exit 0
 fi

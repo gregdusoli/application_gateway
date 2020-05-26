@@ -8,6 +8,7 @@ services:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./nginx/upstreams/:/etc/nginx/upstreams/
       - ./nginx/ssl/:/etc/ssl/
+      - ~/logs/service/application_gateway:/var/log/nginx
       - ~/public_html/:/var/www/
     ports:
       - ${NGINX_HTTP_PORT}:80

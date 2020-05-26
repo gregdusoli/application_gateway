@@ -17,8 +17,10 @@ APPSVC_PATH="public_html"
 
 # Define outras variáveis necessária
 if [[ $# -gt 1 ]]; then
-  APPSVC_NAME=$2
+  APPSVC_TYPE=$2
+  APPSVC_NAME=$3
 else
+  APPSVC_TYPE=
   APPSVC_NAME=
 fi
 SUBDOMAIN=
@@ -44,6 +46,14 @@ function option1 {
   if [[ -z $APPSVC_NAME ]]; then
     echo -e "$bold\n- Qual é o nome do container da aplicação (exatamente o mesmo que está no Docker Compose do container)?$clear"
     read APPSVC_NAME
+  fi
+  
+  # Acessa o diretório da aplicação clonada
+  if [[ -e $APPSVC_NAME ]]; then
+    cd $APPSVC_NAME
+  else
+    echo -e "$bold$red\nO caminho informado não foi encontrado. Execução abortada!$clear"
+    exit 1
   fi
 
   echo -e "$bold\n- Em qual porta sua aplicação está escutando (para redirecionamento de requisições)?$clear"
@@ -75,10 +85,10 @@ function option1 {
       echo $(docker-compose exec service-application_gateway nginx -s reload)
 
       if [[ $? -eq 0 ]]; then
-        echo -e "$bold$green\nRegras de Stream e Proxy criadas com sucesso!\n$clear"
+        echo -e "$green\nRegras de Stream e Proxy criadas com sucesso!\n$clear"
       fi
     else
-      echo -e "$red$bold\nOcorreu um erro ao criar as regras de Stream e Proxy!\nO script foi abortado...$clear"
+      echo -e "$bold$red\nOcorreu um erro ao criar as regras de Stream e Proxy!\nO script foi abortado...$clear"
       exit 1
     fi
   else
@@ -97,6 +107,7 @@ function proxyFileCreate {
 
     location / {
       proxy_pass http://$SUBDOMAIN;
+      access_log logs/$SUBDOMAIN.access.log;
     }
   }"
 
@@ -114,9 +125,9 @@ function proxyFileCreate {
 
   # Retorna o status da criação do arquivo
   if [[ -e $proxy_file ]]; then
-    echo -e "$bold$green\nO arquivo $proxy_file foi criado com sucesso!$clear"
+    echo -e "$green\nO arquivo $proxy_file foi criado com sucesso!$clear"
   else
-    echo -e "$bold$red\nErro ao criar arquivo $proxy_file...$clear"
+    echo -e "$red\nErro ao criar arquivo $proxy_file...$clear"
   fi
 }
 
@@ -140,9 +151,9 @@ function upstreamFileCreate {
 
   # Retorna o status da criação do arquivo
   if [[ -e $upstream_file ]]; then
-    echo -e "$bold$green\nO arquivo $upstream_file foi criado com sucesso!$clear"
+    echo -e "$green\nO arquivo $upstream_file foi criado com sucesso!$clear"
   else
-    echo -e "$bold$red\nErro ao criar arquivo $upstream_file...$clear"
+    echo -e "$red\nErro ao criar arquivo $upstream_file...$clear"
   fi
 }
 
